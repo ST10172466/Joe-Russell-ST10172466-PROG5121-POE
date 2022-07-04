@@ -341,8 +341,8 @@ public class Task extends JFrame implements ActionListener
             System.out.println("Developer Details: " + arrayDevDetails[i]); 
             System.out.println("Task Number: " + arrayTaskNumber[i]);
             System.out.println("Task Name: " + arrayTaskName[i]);  
-            System.out.println("Task Name: " + arrayTaskDescription[i]);
-            System.out.println("Task Name: " + arrayTaskID[i]);            
+            System.out.println("Task Description: " + arrayTaskDescription[i]);
+            System.out.println("Task ID: " + arrayTaskID[i]);            
             System.out.println("Task Duration: " + arrayTaskDuration[i]);           
             System.out.println("--------------------------------------");                     
         }                 
@@ -437,7 +437,6 @@ public class Task extends JFrame implements ActionListener
     {                  
         //Get indexes of all tasks with "Done" statuses
         int index = Arrays.asList(arrayTaskStatus).indexOf("Done");
-        System.out.println(index);
         
         //Display task name, dev details and task duration
         JOptionPane.showMessageDialog(null, "Task Name: " + arrayTaskName[index] 
@@ -532,6 +531,7 @@ public class Task extends JFrame implements ActionListener
                 arrayTaskDescription[temp] = arrayTaskDescription[i];
                 arrayTaskStatus[temp] = arrayTaskStatus[i];
                 arrayTaskDuration[temp] = arrayTaskDuration[i];
+                arrayTaskID[temp] = arrayTaskID[i];
                 temp++;
             }
         }                                
@@ -566,8 +566,8 @@ public class Task extends JFrame implements ActionListener
             System.out.println("Developer Details: " + arrayDevDetails[i]); 
             System.out.println("Task Number: " + i);
             System.out.println("Task Name: " + arrayTaskName[i]);  
-            System.out.println("Task Name: " + arrayTaskDescription[i]);
-            System.out.println("Task Name: " + arrayTaskID[i]);            
+            System.out.println("Task Description: " + arrayTaskDescription[i]);
+            System.out.println("Task ID: " + arrayTaskID[i]);            
             System.out.println("Task Duration: " + arrayTaskDuration[i]);
             System.out.println("--------------------------------------");
         }

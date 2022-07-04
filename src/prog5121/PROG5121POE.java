@@ -8,15 +8,15 @@ public class PROG5121POE
 //------------------------------------------------------------------------------
         Login log = new Login();
         
-        //log.registerUser();        
+        log.registerUser();        
         
-        //log.returnLoginStatus(); 
+        log.returnLoginStatus(); 
         
 //------------------------------------------------------------------------------
         //CODE TO QUICKLY TEST TASK CLASS
-        Task kanban = new Task();
+        //Task kanban = new Task();
         
-        kanban.task();      
+        //kanban.task();      
                 
 //------------------------------------------------------------------------------
     }
