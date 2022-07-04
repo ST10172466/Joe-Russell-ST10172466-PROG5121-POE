@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Arrays;
 import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -15,45 +16,52 @@ public class Task extends JFrame implements ActionListener
 {
 //------------------------------------------------------------------------------ 
     //Declaring JFrame
-    JFrame taskBoard = new JFrame();
+    private static JFrame taskBoard = new JFrame();
 
     //Declaring buttons 
-    JButton taskButton;
-    JButton reportButton;
-    JButton quitButton;
+    private static JButton taskButton;
+    private static JButton reportButton;
+    private static JButton quitButton;
 
     //Declaring label
-    JLabel introLabel;
+    private static JLabel introLabel;
 
 //Declaring variables
-    int taskAmmount;
+    private static int taskAmmount;
 
-    int taskNumber;
+    private static String taskName;
 
-    String taskName;
+    private static String devName;
 
-    String devName;
+    private static String statusOfTask;
 
-    String statusOfTask;
+    private static String descriptionOfTask;
 
-    String descriptionOfTask;
+    private static int taskDuration;
     
-    int taskDuration;
-   
+    private static String fullList;
+
     //Strings used to create Task ID
-    String taskFirstLetters;
-    String devLastLetters;
-    String taskID;
+    private static String taskFirstLetters;
+    private static String devLastLetters;
+    private static String taskID;
 
     //Variables used for calculating total hours
-    int sum;
-    ArrayList<Integer> sumList = new ArrayList();
-    int totalHours;
+    private static int sum;
+    private static ArrayList<Integer> sumList = new ArrayList();
+    private static int totalHours;
 
-    String printDetails;
-    
+    private static String printDetails;
+
     //Arraylist to display Task Details
-    ArrayList printTaskDetails = new ArrayList();
+
+    String[] arrayTaskName = new String[10];
+    String[] arrayDevDetails = new String[10];
+    int[] arrayTaskNumber = new int[10];
+    int[] arrayTaskDuration = new int[10];
+    String[] arrayTaskDescription = new String[10];
+    String[] arrayTaskStatus = new String[10];
+    String[] arrayTaskID = new String[10];
 
 //-----------------------------First Method Start-------------------------------    
     //Creating JFrame
@@ -108,8 +116,8 @@ public class Task extends JFrame implements ActionListener
     }
 //-----------------------------First Method End---------------------------------
 
-
-
+    
+    
 //-----------------------------Second Method Start------------------------------
     //Adding button actions
     @Override
@@ -123,27 +131,31 @@ public class Task extends JFrame implements ActionListener
             numberOfTasks();
 
             //Loop to run methods for task creation
-            for (taskNumber = 0; taskNumber < taskAmmount; taskNumber++)
+            for (int i = 0; i < taskAmmount; i++)
             {
-                enterTaskName();
-                devDetails();
-                enterTaskDescription();
+                arrayTaskNumber[i] = i;
+                arrayTaskName[i] = enterTaskName();
+                arrayDevDetails[i] = devDetails(devName);
+                arrayTaskDescription[i] = enterTaskDescription();
                 checkTaskDescription(descriptionOfTask);
-                taskStatus();
-                taskDuration();
-                createTaskID(taskName, taskNumber, devName);
+                arrayTaskStatus[i] = taskStatus();
+                arrayTaskDuration[i] = taskDuration();
+                arrayTaskID[i] = createTaskID(taskName, i, devName);
                 returnTotalHours(taskDuration);
-                printTaskDetails();
             }
+            
+            printTaskDetails();
         }
-        
+
 //------------------------------------------------------------------------------
         //Button to access Report feature (currently not implemented)
         if (e.getSource() == reportButton)
         {
-            JOptionPane.showMessageDialog(null, "This Feature is Coming Soon", "Coming Soon", JOptionPane.INFORMATION_MESSAGE);
+            //JOptionPane.showMessageDialog(null, "This Feature is Coming Soon", "Coming Soon", JOptionPane.INFORMATION_MESSAGE);
+            ShowReport();
         }
 
+//------------------------------------------------------------------------------        
         //Button to Quit application
         if (e.getSource() == quitButton)
         {
@@ -151,8 +163,8 @@ public class Task extends JFrame implements ActionListener
         }
     }
 //-----------------------------Second Method End--------------------------------
-    
 
+    
     
 //-----------------------------Third Method Start-------------------------------
     public int numberOfTasks()
@@ -162,18 +174,16 @@ public class Task extends JFrame implements ActionListener
         {
             //Input number of tasks
             taskAmmount = Integer.parseInt(JOptionPane.showInputDialog("Enter the number of tasks you want."));
-            if( 1 > taskAmmount)
+            if (1 > taskAmmount)
             {
                 numberOfTasks();
             }
-        }
-        
-        catch(Exception A)
-        {                    
+        } catch (Exception A)
+        {
             JOptionPane.showMessageDialog(null, "Please Enter A Number", "Invalid Input", JOptionPane.ERROR_MESSAGE);
             numberOfTasks();
-        }        
-        return taskAmmount;        
+        }
+        return taskAmmount;
     }
 //-----------------------------Third Method End---------------------------------
 
@@ -187,7 +197,7 @@ public class Task extends JFrame implements ActionListener
         if (taskName.length() < 2)
         {
             enterTaskName();
-        }        
+        }
         return taskName;
     }
 //-----------------------------Fourth Method End--------------------------------   
@@ -195,20 +205,19 @@ public class Task extends JFrame implements ActionListener
     
     
 //-----------------------------Fifth Method Start------------------------------- 
-    public String devDetails()
+    public String devDetails(String tempDevName)
     {
         //Input full name of developer
-        devName = JOptionPane.showInputDialog("Enter the Dev Name for the task");
+        devName = tempDevName = JOptionPane.showInputDialog("Enter the Dev Name for the task");
+
         if (devName.length() < 3)
         {
-            devDetails();
-        }        
+            devDetails(devName);
+        }
         return devName;
     }
 //-----------------------------Fifth Method End---------------------------------
 
-        
-        
 //-----------------------------Sixth Method Start-------------------------------
     public String enterTaskDescription()
     {
@@ -216,9 +225,10 @@ public class Task extends JFrame implements ActionListener
         descriptionOfTask = JOptionPane.showInputDialog("Enter the description for the task");
         return descriptionOfTask;
     }
-    
+
+    //Method to check task description
     public boolean checkTaskDescription(String checkDescription)
-    {    
+    {
         //While loop to check that description of task is less than 50 words
         while (checkDescription.length() >= 50)
         {
@@ -227,9 +237,7 @@ public class Task extends JFrame implements ActionListener
             checkTaskDescription(descriptionOfTask);
             return false;
         }
-        
         return true;
-        
     }
 //-----------------------------Sixth Method End---------------------------------
 
@@ -255,32 +263,30 @@ public class Task extends JFrame implements ActionListener
     
 //-----------------------------Eighth Method Start------------------------------
     public int taskDuration()
-    {       
+    {
         //Try and catch to only allow number inputs
         try
         {
             //Input task duration
             taskDuration = Integer.parseInt(JOptionPane.showInputDialog("Enter the estimated duration of the task"));
-            if( 0 > taskDuration)
+            if (0 > taskDuration)
             {
                 taskDuration();
             }
-        }
-        
-        catch(Exception A)
-        {                    
-            JOptionPane.showMessageDialog(null,"Please Enter A Number", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception A)
+        {
+            JOptionPane.showMessageDialog(null, "Please Enter A Number", "Invalid Input", JOptionPane.ERROR_MESSAGE);
             taskDuration();
-        }                
+        }
         return taskDuration;
     }
 //-----------------------------Eighth Method End--------------------------------
 
     
-       
+    
 //-----------------------------Ninth Method Start-------------------------------
     public String createTaskID(String taskIDName, int taskIDNumber, String devIDName)
-    {        
+    {
         //Using substrings to get specific letters of arrays
         taskFirstLetters = taskIDName.substring(0, 2);
         devLastLetters = devIDName.substring(devIDName.length() - 3);
@@ -293,13 +299,13 @@ public class Task extends JFrame implements ActionListener
 //-----------------------------Ninth Method End---------------------------------
 
     
-
+    
 //-----------------------------Tenth Method Start-------------------------------
     public int returnTotalHours(int totalHoursDuration)
     {
         //Initialise totalHours
         totalHours = 0;
-        
+
         //Add task duration inputs to sumList array
         sum = totalHoursDuration;
         sumList.add(sum);
@@ -310,46 +316,265 @@ public class Task extends JFrame implements ActionListener
         {
             arr[i] = sumList.get(i);
         }
-        
+
         //For loop to calculate total hours
-        for (int i = 0; i <sumList.size(); i++)
+        for (int i = 0; i < sumList.size(); i++)
         {
             totalHours = totalHours + arr[i];
         }
+        
         return totalHours;
     }
 //-----------------------------Tenth Method End---------------------------------
-    
+
     
     
 //-----------------------------Eleventh Method Start----------------------------
     public String printTaskDetails()
     {
-        //Adding different parts of task to arraylist
-        printTaskDetails.add("The status of the task : " + statusOfTask);
-        printTaskDetails.add("The name of the developer : " + devName);
-        printTaskDetails.add("The number of the task : " + taskNumber);
-        printTaskDetails.add("The name of the task : " + taskName);
-        printTaskDetails.add("The description of the task : " + descriptionOfTask);
-        printTaskDetails.add("The Task ID : " + taskID);
-        printTaskDetails.add("The duration of the task is : " + taskDuration);
-        printTaskDetails.add(" ");
-
-        String output = "";
-
-        //For loop to convert arraylist to String
-        for (int i = 0; i < printTaskDetails.size(); i++)
-        {
-            printDetails = printTaskDetails.get(i).toString();
-            output += printDetails + "\n";
-        }
+        for(int i = 0; i < taskAmmount;i++)
+        {             
+            System.out.println(" ");
+            System.out.println("Task " + i);
+            System.out.println("--------------------------------------");
+            System.out.println("Task Status: " + arrayTaskStatus[i]);
+            System.out.println("Developer Details: " + arrayDevDetails[i]); 
+            System.out.println("Task Number: " + arrayTaskNumber[i]);
+            System.out.println("Task Name: " + arrayTaskName[i]);  
+            System.out.println("Task Name: " + arrayTaskDescription[i]);
+            System.out.println("Task Name: " + arrayTaskID[i]);            
+            System.out.println("Task Duration: " + arrayTaskDuration[i]);           
+            System.out.println("--------------------------------------");                     
+        }                 
         
-        //Display information as JOptionPane
-        JOptionPane.showMessageDialog(null, output + "The total ammount of hours to complete all tasks is : " 
-                                                   + totalHours, "All Tasks", JOptionPane.INFORMATION_MESSAGE);
+        System.out.println("The Total Hours required to complete all tasks: " + totalHours);
+        System.out.println("--------------------------------------");
+        
         return printDetails;
     }
 //-----------------------------Eleventh Method End------------------------------
+
     
+    
+//-----------------------------Twelfth Method Start-----------------------------
+    public void ShowReport()
+    {
+        //Try and catch to only allow number inputs
+        try
+        {
+            //Option select for switch statement
+            int switchInput = Integer.parseInt(JOptionPane.showInputDialog("Enter 1 to Display Completed Tasks"
+                    + "\nEnter 2 to View Longest Task"
+                    + "\nEnter 3 to Search Tasks"
+                    + "\nEnter 4 to Search Tasks Being Worked on by Specific Dev"
+                    + "\nEnter 5 to Delete Task"
+                    + "\nEnter 6 to Display All Tasks"
+                    + "\nEnter 7 to Return to Main Menu"));
+            
+            //If an invalid input is entered the method repeats
+            if (0 > switchInput)
+            {
+                ShowReport();
+            }
+
+            //Switch statement to perform various functions
+            switch (switchInput)
+            {
+                //Display all completed tasks
+                case 1:
+                    DisplayFinished();
+                    ShowReport();
+                    break;
+
+                //Display task with the longest duration    
+                case 2:
+                    DisplayLongest(0);
+                    ShowReport();
+                    break;
+
+                //Display specific task after searching by name
+                case 3:                    
+                    SearchTasks();
+                    ShowReport();
+                    break;
+
+                //Display all tasks worked on by specific dev
+                case 4:                    
+                    SearchDevs();
+                    ShowReport();
+                    break;
+                    
+                //Delete task after searching by name
+                case 5:
+                    DeleteTask();
+                    ShowReport();
+                    break;
+                    
+                //Display all tasks
+                case 6:
+                    DisplayAllTasks();
+                    ShowReport();
+                    break;
+                    
+                case 7:
+                    break;
+            }
+        } 
+        
+        //Text displayed when invalid input is entered
+        catch (Exception A)
+        {
+            JOptionPane.showMessageDialog(null, "There are no tasks that meet requirements", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+            ShowReport();
+        }
+    }
+//-----------------------------Twelfth Method End-------------------------------
+
+    
+    
+//-----------------------------Thirteenth Method Start--------------------------
+    public void DisplayFinished()
+    {                  
+        //Get indexes of all tasks with "Done" statuses
+        int index = Arrays.asList(arrayTaskStatus).indexOf("Done");
+        System.out.println(index);
+        
+        //Display task name, dev details and task duration
+        JOptionPane.showMessageDialog(null, "Task Name: " + arrayTaskName[index] 
+                + "\nDeveloper Details: " + arrayDevDetails[index] 
+                + "\nTask Duration: " + arrayTaskDuration[index], "Task " + index, JOptionPane.INFORMATION_MESSAGE);
+    }
+//-----------------------------Thirteenth Method End----------------------------
+    
+    
+    
+//-----------------------------Fourteenth Method Start--------------------------
+    public int DisplayLongest(int tempIndex)
+    {                   
+        if(arrayDevDetails[0].equalsIgnoreCase("null"))
+        {
+            ShowReport();           
+        }
+                    
+        int index = Task.Maximum(arrayTaskDuration);                
+        tempIndex = index;
+        
+        //Display dev details and task duration
+        JOptionPane.showMessageDialog(null, "Developer Details: " + arrayDevDetails[tempIndex] 
+                + "\nTask Duration: " + arrayTaskDuration[tempIndex], "Task " + tempIndex, JOptionPane.INFORMATION_MESSAGE);
+        return arrayTaskDuration[tempIndex];
+        }
+    
+        static int Maximum(int temp[]) 
+	{ 
+		int maximum,index = 0, i = 1; 
+		maximum = temp[0]; 
+		while ( i < temp.length) 
+		{ 
+			if (maximum < temp[i]) 
+			{ 
+                            maximum = temp[i]; 
+                            index = i; 
+			} 
+			i++; 
+		} 
+		return index; 
+	} 
+//-----------------------------Fourteenth Method End----------------------------
+
+            
+    
+//-----------------------------Fifteenth Method Start---------------------------
+    public void SearchTasks()
+    {
+        //Get index of the task you have searched for
+        String nameSearch = JOptionPane.showInputDialog(null, "Enter the name of the task you want to search for");        
+        int index = Arrays.asList(arrayTaskName).indexOf(nameSearch);
+        
+        //Display task name, dev details and task status
+        JOptionPane.showMessageDialog(null, "Task Name: " + arrayTaskName[index] 
+                + "\nDeveloper Details: " + arrayDevDetails[index] 
+                + "\nTask Status: " + arrayTaskStatus[index], "Task " + index, JOptionPane.INFORMATION_MESSAGE);
+        
+    }
+//-----------------------------Fifteenth Method End-----------------------------
+
+        
+    
+//-----------------------------Sixteenth Method End-----------------------------        
+    public void SearchDevs()
+    {
+        //Get indexes of the tasks worked on by the dev you have searched for 
+        String devSearch = JOptionPane.showInputDialog(null, "Enter the name of the dev you want to search for");
+        int index = Arrays.asList(arrayDevDetails).indexOf(devSearch);
+        
+        //Display task name and task status
+        JOptionPane.showMessageDialog(null, "Task Name: " + arrayTaskName[index] 
+                + "\nTask Status: " + arrayTaskStatus[index], "Task " + index, JOptionPane.INFORMATION_MESSAGE);
+    }
+//-----------------------------Sixteenth Method End-----------------------------  
+    
+    
+    
+//-----------------------------Seventeenth Method Start-------------------------
+    public String DeleteTask()
+    {                
+        String deleteTaskName = JOptionPane.showInputDialog("Please enter the name of the task you wish to delete");
+        
+        int temp = 0;
+        for (int i = 0; i < taskAmmount; i++)
+        {
+            if (!arrayTaskName[i].equals(deleteTaskName))
+            {
+                arrayTaskNumber[temp] = arrayTaskNumber[i];
+                arrayTaskName[temp] = arrayTaskName[i];
+                arrayDevDetails[temp] = arrayDevDetails[i];
+                arrayTaskDescription[temp] = arrayTaskDescription[i];
+                arrayTaskStatus[temp] = arrayTaskStatus[i];
+                arrayTaskDuration[temp] = arrayTaskDuration[i];
+                temp++;
+            }
+        }                                
+                 
+        taskAmmount--;
+                
+        String returnArray = "Entry successfully deleted";
+        JOptionPane.showMessageDialog(null, returnArray);
+        
+        return returnArray;
+    }
+//-----------------------------Seventeenth Method End---------------------------    
+    
+    
+    
+//-----------------------------Eighteenth Method Start--------------------------
+    public void DisplayAllTasks()
+    {
+        //If list is empty display invalid message
+        if(arrayDevDetails[0].equalsIgnoreCase("null"))
+        {
+            ShowReport();           
+        }                
+
+        //Display all tasks on separate JOptionPane
+        for(int i = 0; i < taskAmmount;i++)
+        {             
+            System.out.println(" ");
+            System.out.println("Task " + i);
+            System.out.println("--------------------------------------");
+            System.out.println("Task Status: " + arrayTaskStatus[i]);
+            System.out.println("Developer Details: " + arrayDevDetails[i]); 
+            System.out.println("Task Number: " + i);
+            System.out.println("Task Name: " + arrayTaskName[i]);  
+            System.out.println("Task Name: " + arrayTaskDescription[i]);
+            System.out.println("Task Name: " + arrayTaskID[i]);            
+            System.out.println("Task Duration: " + arrayTaskDuration[i]);
+            System.out.println("--------------------------------------");
+        }
+        
+        System.out.println("The Total Hours required to complete all tasks: " + totalHours);
+        System.out.println("--------------------------------------");
+    }
+//-----------------------------Eighteenth Method End----------------------------    
 }
 //---------------------------**** END OF FILE ****------------------------------

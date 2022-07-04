@@ -1,6 +1,7 @@
 package prog5121;
 
-import prog5121.Task;
+import java.util.Arrays;
+import javax.swing.JOptionPane;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.FixMethodOrder;
@@ -37,7 +38,7 @@ public class TaskTest
     public void CtestDevDetails()
     {
         String expected = "Robyn Harrison";
-        String actual = kanban.devDetails();
+        String actual = kanban.devDetails("Robyn Harrison");
         assertEquals(expected, actual);
     }
 
@@ -85,7 +86,7 @@ public class TaskTest
     public void ItestDevDetails()
     {
         String expected = "Mike Smith";
-        String actual = kanban.devDetails();
+        String actual = kanban.devDetails("Mike Smith");
         assertEquals(expected, actual);
     }
 
@@ -156,16 +157,182 @@ public class TaskTest
     @Test
     public void PtestReturnTotalHours()
     {
-        int[] taskDurations = {8, 10};
+        int[] taskDurations =
+        {
+            8, 10
+        };
 
         int actual = 0;
-                
+
         for (int i = 0; i < 2; i++)
-        {            
+        {
             actual = kanban.returnTotalHours(taskDurations[i]);
         }
         int expected = 18;
         assertEquals(expected, actual);
     }
 
+    @Test
+    public void QtestDevDetails()
+    {
+        String[] devNames = new String[]
+        {
+            "Mike Smith", "Edward Harrison", "Samantha Paulson", "Glenda Oberholzer"
+        };
+
+        String[] taskNames =
+        {
+            "Create Login", "Create Add Features", "Create Reports", "Add Arrays"
+        };
+
+        int[] taskDuration =
+        {
+            5, 8, 2, 11
+        };
+
+        String[] taskStatus =
+        {
+            "To Do", "Doing", "Done", "To Do"
+        };
+
+        for (int i = 0; i < devNames.length; i++)
+        {
+            String expected = devNames[i];
+            String actual = kanban.devDetails(devNames[i]);
+            assertEquals(expected, actual);
+        }
+    }
+
+    @Test
+    public void RtestDisplayLongest()
+    {
+        String[] devNames = new String[]
+        {
+            "Mike Smith", "Edward Harrison", "Samantha Paulson", "Glenda Oberholzer"
+        };
+
+        String[] taskNames =
+        {
+            "Create Login", "Create Add Features", "Create Reports", "Add Arrays"
+        };
+
+        int[] taskDuration =
+        {
+            5, 8, 2, 11
+        };
+
+        String[] taskStatus =
+        {
+            "To Do", "Doing", "Done", "To Do"
+        };
+
+        for (int i = 0; i < devNames.length; i++)
+        {
+            int expected = taskDuration[i];
+            int actual = kanban.DisplayLongest(kanban.Maximum(taskDuration));
+            assertEquals(expected, actual);
+        }
+    }
+
+    @Test
+    public void StestSearchTasks()
+    {
+        String[] devNames = new String[]
+        {
+            "Mike Smith", "Edward Harrison", "Samantha Paulson", "Glenda Oberholzer"
+        };
+
+        String[] taskNames =
+        {
+            "Create Login", "Create Add Features", "Create Reports", "Add Arrays"
+        };
+
+        for (int i = 0; i < devNames.length; i++)
+        {
+            String expected = devNames[0] + taskNames[0];
+
+            String nameSearch = "Create Login";
+            int index = Arrays.asList(taskNames).indexOf(nameSearch);
+           
+            String actual = devNames[index] + taskNames[index];
+            assertEquals(expected, actual);
+            break;
+        }
+    }
+    
+    @Test
+    public void TtestDevSearch()
+    {
+        String[] devNames = new String[]
+        {
+            "Mike Smith", "Edward Harrison", "Samantha Paulson", "Glenda Oberholzer"
+        };
+
+        String[] taskNames =
+        {
+            "Create Login", "Create Add Features", "Create Reports", "Add Arrays"
+        };
+
+        for (int i = 0; i < devNames.length; i++)
+        {
+            String expected = taskNames[2];
+            
+            String devSearch = "Samantha Paulson";
+            int index = Arrays.asList(devNames).indexOf(devSearch);
+            
+            String actual = taskNames[index];          
+            assertEquals(expected, actual);
+        }
+    }
+    
+    @Test
+    public void UtestDeleteTask()
+    {
+        String[] devNames = new String[]
+        {
+            "Mike Smith", "Edward Harrison", "Samantha Paulson", "Glenda Oberholzer"
+        };
+
+        String[] taskNames =
+        {
+            "Create Login", "Create Add Features", "Create Reports", "Add Arrays"
+        };
+
+        int[] taskDuration =
+        {
+            5, 8, 2, 11
+        };
+
+        String[] taskStatus =
+        {
+            "To Do", "Doing", "Done", "To Do"
+        };
+
+        for (int f = 0; f < devNames.length; f++)
+        {
+            String expected = "Add Arrays";
+            
+            String deleteTaskName = "Create Reports";
+        
+        int temp = 0;
+        int taskAmmount = 4;
+        for (int i = 0; i < taskAmmount; i++)
+        {
+            if (!taskNames[i].equals(deleteTaskName))
+            {
+                taskNames[temp] = taskNames[i];
+                devNames[temp] = devNames[i];
+                taskStatus[temp] = taskStatus[i];
+                taskDuration[temp] = taskDuration[i];
+                temp++;
+            }
+        }                                                 
+        taskAmmount--;
+                
+        String returnArray = taskNames[2];        
+        
+            String actual = returnArray;
+            assertEquals(expected, actual);
+        }
+    }    
 }

@@ -12,10 +12,10 @@
     </editor-bookmarks>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Spect/Documents/NetBeansProjects/PROG5121%20POE/src/prog5121/poe/PROG5121POE.java</file>
-            <file>file:/C:/Users/Spect/Documents/NetBeansProjects/PROG5121%20POE/src/prog5121/poe/Login.java</file>
-            <file>file:/C:/Users/Spect/Documents/NetBeansProjects/PROG5121%20POE/src/prog5121/poe/Task.java</file>
-            <file>file:/C:/Users/Spect/Documents/NetBeansProjects/PROG5121%20POE/test/prog5121/poe/TaskTest.java</file>
+            <file>file:/C:/Users/Spect/Documents/NetBeansProjects/PROG5121%20POE/src/prog5121/Login.java</file>
+            <file>file:/C:/Users/Spect/Documents/NetBeansProjects/PROG5121%20POE/src/prog5121/Task.java</file>
+            <file>file:/C:/Users/Spect/Documents/NetBeansProjects/PROG5121%20POE/test/prog5121/TaskTest.java</file>
+            <file>file:/C:/Users/Spect/Documents/NetBeansProjects/PROG5121%20POE/src/prog5121/PROG5121POE.java</file>
         </group>
     </open-files>
 </project-private>
